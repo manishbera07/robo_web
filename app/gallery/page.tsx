@@ -18,17 +18,6 @@ type GalleryImage = {
   category: string | null
   created_at: string | null
 }
-import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
-
-type GalleryImage = {
-  id: string
-  title: string
-  description: string | null
-  image_url: string
-  category: string | null
-  created_at: string | null
-}
 
 export default function GalleryPage() {
   const { accentColor, secondaryColor } = useTheme()
