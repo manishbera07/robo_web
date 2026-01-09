@@ -2,17 +2,16 @@
 
 import { motion } from "framer-motion"
 import { useTheme } from "./theme-provider"
-import { Github, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react"
+import { Instagram, Linkedin, Mail, MapPin } from "lucide-react"
 import Link from "next/link"
 
 export function Footer() {
   const { accentColor, secondaryColor } = useTheme()
 
   const socialLinks = [
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Mail, href: "mailto:roboticsclub@heritage.edu.in", label: "Email" },
+    { icon: Instagram, href: "https://www.instagram.com/robotics_hitk?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", label: "Instagram" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/robotics-club-hitk/", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:roboticsclub.hitk@gmail.com", label: "Email" },
   ]
 
   const quickLinks = [
@@ -102,12 +101,8 @@ export function Footer() {
                 <span>Heritage Institute of Technology, Chowbaga Road, Anandapur, Kolkata - 700107</span>
               </li>
               <li className="flex items-center gap-2 text-sm opacity-70">
-                <Phone size={16} style={{ color: secondaryColor }} />
-                <span>+91 98765 43210</span>
-              </li>
-              <li className="flex items-center gap-2 text-sm opacity-70">
                 <Mail size={16} style={{ color: secondaryColor }} />
-                <span>roboticsclub@hitk.edu.in</span>
+                <span>roboticsclub.hitk@gmail.com</span>
               </li>
             </ul>
           </div>

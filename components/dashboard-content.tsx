@@ -62,6 +62,10 @@ export function DashboardContent({ user }: DashboardContentProps) {
   const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "Profile"
   const gamesList = ["Memory Matrix", "Reaction Test", "Pattern Pulse", "Binary Breaker"]
 
+  // Calculate XP based on activities
+  const userXP = (gameScores.length * 10) + (registeredEvents.length * 50)
+  const maxXP = 1000
+
   useEffect(() => {
     fetchRegisteredEvents()
     fetchGameScores()
@@ -88,7 +92,12 @@ export function DashboardContent({ user }: DashboardContentProps) {
         .eq('user_id', user.id)
         .order('registered_at', { ascending: false })
       
-      if (error) throw error
+      if (error) {
+        console.error('Error fetching registered events:', error)
+        // If table doesn't exist, just set empty array
+        setRegisteredEvents([])
+        return
+      }
       
       // Filter to show only upcoming/ongoing events (not past events)
       const now = new Date()
@@ -100,6 +109,7 @@ export function DashboardContent({ user }: DashboardContentProps) {
       setRegisteredEvents(upcomingEvents)
     } catch (err) {
       console.error('Error fetching registered events:', err)
+      setRegisteredEvents([])
     } finally {
       setEventsLoading(false)
     }
@@ -114,10 +124,16 @@ export function DashboardContent({ user }: DashboardContentProps) {
         .order('score', { ascending: false })
         .order('completed_at', { ascending: false })
 
-      if (error) throw error
+      if (error) {
+        console.error('Error fetching game scores:', error)
+        // If table doesn't exist, just set empty array
+        setGameScores([])
+        return
+      }
       setGameScores(data || [])
     } catch (err) {
       console.error('Error fetching game scores:', err)
+      setGameScores([])
     } finally {
       setScoresLoading(false)
     }
