@@ -83,10 +83,16 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
             >
               <div className="relative">
                 <motion.div
-                  className="w-20 h-20 flex items-center justify-center overflow-hidden"
-                  style={{ background: "transparent", boxShadow: "none" }}
-                  animate={{ boxShadow: "none" }}
-                  transition={{ duration: 0.6 }}
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden"
+                  style={{ background: "transparent" }}
+                  animate={{
+                    boxShadow: [
+                      "0 0 16px rgba(245, 166, 35, 0.2)",
+                      "0 0 28px rgba(0, 255, 136, 0.3)",
+                      "0 0 16px rgba(245, 166, 35, 0.2)",
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
                 >
                   <img
                     src="/Logo Symbol_Robotics Club HITK.png"
