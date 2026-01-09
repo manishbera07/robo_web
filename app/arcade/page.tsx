@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { Navbar } from "@/components/navbar"
@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer"
 import { ParticleNetwork } from "@/components/particle-network"
 import { RobotWatcher } from "@/components/robot-watcher"
 import { Gamepad2, Trophy, ArrowLeft } from "lucide-react"
+import { createClient } from "@/lib/supabase/client"
 
 // Game Components
 import { MemoryMatrix } from "@/components/games/memory-matrix"
@@ -55,12 +56,38 @@ export default function ArcadePage() {
   const { accentColor, secondaryColor } = useTheme()
   const [currentGame, setCurrentGame] = useState<GameType>("menu")
   const [highScores, setHighScores] = useState<Record<string, number>>({})
+  const supabase = createClient()
+  const [userId, setUserId] = useState<string | null>(null)
 
-  const updateHighScore = (gameId: string, score: number) => {
+  useEffect(() => {
+    async function getUser() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        setUserId(user.id)
+      }
+    }
+    getUser()
+  }, [])
+
+  const updateHighScore = async (gameId: string, score: number) => {
     setHighScores((prev) => ({
       ...prev,
       [gameId]: Math.max(prev[gameId] || 0, score),
     }))
+
+    // Save to database if user is logged in
+    if (userId) {
+      try {
+        await supabase.from('game_scores').insert({
+          user_id: userId,
+          game_name: gameId,
+          score: score,
+          completed_at: new Date().toISOString(),
+        })
+      } catch (error) {
+        console.error('Error saving score:', error)
+      }
+    }
   }
 
   return (
